@@ -62,6 +62,8 @@ public class Vertex {
         return intermediateDistance;
     }
 
+    public long getEndId() {return endId;}
+
     /**
      * calculate a vertex with certain distance from start vertex
      * in the edge of start vertex and endId vertex
@@ -132,5 +134,12 @@ public class Vertex {
     @Override
     public String toString() {
         return "[" + altitude/1000000.0 + ", " + longitude/1000000.0 + "]";
+    }
+
+    public String info() {
+        if (isIntermediate())
+            return getId() + " " + getEndId() + " " + getIntermediateDistance();
+        else
+            return getId() + "";
     }
 }

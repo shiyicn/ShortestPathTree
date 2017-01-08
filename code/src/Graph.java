@@ -170,6 +170,27 @@ public class Graph {
         }
     }
 
+    public void save(String markQuestion, String filePath, long center, LinkedList<Vertex> points) {
+        File file  = new File(filePath);
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            out.write(markQuestion + "\n");
+            out.write("size " + points.size() + "\n");
+            out.write("\n\n" + "c " + getVertex(center).info() + "\n");
+            out.flush();
+            out.write("Points and their infos" + "\n");
+            out.flush();
+            for (Vertex v : points) {
+                if (v.isIntermediate()) out.write("i " + v.info() + "\n");
+                else out.write("v " + v.info() + "\n");
+                out.flush();
+            }
+            out.close();
+        }catch (IOException e) {
+
+        }
+    }
+
     public List<Long> ids() {
         List<Long> ids = new ArrayList<>(vertices.keySet());
         return ids;

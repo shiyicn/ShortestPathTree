@@ -60,11 +60,21 @@ public class ShortestPathTree {
             //select the closest vertex in the unsettled et settledBuffer set
             p1 = unsettled.poll();
             p2 = unsettledBuffer.poll();
-            if (p2 == null || p2.v > p1.v) p = p1;
-            else p = p2;
+            if (p2 == null){
+                p = p1;
+            } else if(p2.v < p1.v){
+                p = p2;
+                unsettled.add(p1);
+            } else {
+                p = p1;
+                unsettledBuffer.add(p2);
+            }
 
+            if (shortestDistances.get(p.k) == null) {
+                System.out.println(p.k);
+            }
             //we possibly continue to add redundant distances for settled vertices
-            if (!shortestDistances.containsKey(p.k) || (p.v <= shortestDistances.get(p.k) && p.v > travelTime)) {
+            if (p.v <= shortestDistances.get(p.k) && p.v > travelTime) {
                 //add appropriate vertex to verticesDist set
                 if (shortestDistances.get(p.prev) <= travelTime) {
                     verticesDist.add(
@@ -81,27 +91,23 @@ public class ShortestPathTree {
 
             if (!settled.contains(p.k)) {
                 settled.add(p.k);
-                shortestDistances.put(p.k, p.v);
             } else continue;
 
             neighbors = g.getNeighbors(p.k, flagOfOut);
             if (neighbors != null) {
                 for (Long v : neighbors) {
                     distCurrent = p.v + g.getDistance(p.k, v, flagOfOut);
+                    //update its distance to the source
                     //if vertex v isn't yet reached or current distance is no more than its former one
-                    //if (shortestDistances.get(v) == null || distCurrent < shortestDistances.get(v)) {
-                    if (!settled.contains(v)) {
-                        //update its distance to the source
-                        if (shortestDistances.get(v) == null || distCurrent < shortestDistances.get(v)) {
-                            shortestDistances.put(v, distCurrent);
-                            //if the distance is more than travel time, we add it to unsettledBuffer set
-                            if (p.v > travelTime)
-                                unsettledBuffer.add(new Tuple(v, p.k, distCurrent));
-                            else
-                                unsettled.add(new Tuple(v, p.k, distCurrent));
-                            //update its predecessor
-                            prev.put(v, p.k);
-                        }
+                    if (shortestDistances.get(v) == null || distCurrent < shortestDistances.get(v)) {
+                        shortestDistances.put(v, distCurrent);
+                        //if the distance is more than travel time, we add it to unsettledBuffer set
+                        if (p.v > travelTime)
+                            unsettledBuffer.add(new Tuple(v, p.k, distCurrent));
+                        else
+                            unsettled.add(new Tuple(v, p.k, distCurrent));
+                        //update its predecessor
+                        prev.put(v, p.k);
                     } else if (distCurrent == shortestDistances.get(v)) {
                         //if distCurrent is already equal to a former one, we don't need to update its predecessor
                         if (p.v > travelTime)
@@ -159,7 +165,6 @@ public class ShortestPathTree {
         while(distance > d) {
             distance -= d;
             id = prev.get(id);
-//System.out.println(prev.get(id) + " ----- " + id + " ---- " + flagOfOut);
             d = g.getDistance(prev.get(id), id, flagOfOut);
         }
 
@@ -196,8 +201,6 @@ public class ShortestPathTree {
             sptIn.clear();
             check.clear();
 
-//System.out.println(low + " <= r(" + v + ")");
-
             high = high * 2;
             inSet = sptIn.backwardPoints(v, high, high/2);
             outSet = sptOut.backwardPoints(v, high, high/2);
@@ -208,8 +211,6 @@ public class ShortestPathTree {
             // if not 'high' is already a upper bound of reach
             else break;
         } while (true);
-
-//System.out.println(low + " <= r(" + v + ") <= " + high);
 
         sptOut.clear();
         sptIn.clear();
@@ -225,8 +226,6 @@ public class ShortestPathTree {
         //if not '3 * low' is a upper bound of reach
         else high = 3 * low;
 
-//System.out.println(low + " <= r(" + v + ") <= " + high);
-
 System.out.println("r(" + v + ") = " + (high + low) / 2);
         return (high + low) / 2;
     }
@@ -240,7 +239,10 @@ System.out.println("r(" + v + ") = " + (high + low) / 2);
         List<Long> keys = g.ids();
         Random r = new Random();
         for (int i=0; i<n; i+=1) {
+            long t0 = System.currentTimeMillis();
             reach(keys.get(r.nextInt(keys.size())), g);
+            long t1 = System.currentTimeMillis();
+            System.out.println("Time cost: " + (t1 - t0) / 1000);
         }
     }
 
