@@ -63,7 +63,7 @@ We just need to back propagate points, obtained in the question 1.2, with 1h dis
 Algorithm that we use to handle question 1.1 to 1.3.
 
 \begin{algorithm}[H]
- \KwData{An directed graph $G = (V, E)$, non negative wights, a source node $v\in V$, travel time $t$, $\omega : E \rightarrow \mathbb{R}$, $d : V \rightarrow \mathbb{R}$ distance to v, $settled : V \rightarrow boolean$ and $p: V \rightarrow V$, predecessor of a vertex $x\in V$}
+ \KwData{An directed graph $G = (V, E)$, non negative wights, a source node $v\in V$, travel time $t$, $\omega : E \rightarrow \mathbb{R}$. Results generated in the algorithm: $d : V \rightarrow \mathbb{R}$ distance to v, $settled : V \rightarrow boolean$ and $p: V \rightarrow V$, predecessor of a vertex $x\in V$}
  \KwResult{Set of points with distance $t$ to $v$}
 
  \For{$x \in V$}{
@@ -72,9 +72,10 @@ Algorithm that we use to handle question 1.1 to 1.3.
  }
  Q.initialize, Qb.initialize\;
  Q.add(v, v, 0)\;
+ d(v) = 0\;
  \While{not Q.empty}{
   (x, prev, dist) := extractmin(Q, Qb)\;
-  \eIf{$dist \leqslant d$}{
+  \eIf{$dist \leqslant d(x)$}{
     \If{$dist > t $ and $d(prev) \leqslant t$}{
       points.add(x, prev, t-d(prev)\;
     }
@@ -111,6 +112,6 @@ Algorithm that we use to handle question 1.1 to 1.3.
  return points\;
  \caption{Find points with a certain distance to a given vertex}
 \end{algorithm}
-To find all sufficiently distant points without searching whole map, the main idea is to create two priority queues -- Q and Qb. Q stores the vertices whose predecessor can be visited within the travel time limit. Qb stores the vertices whose predecessor can't be visited within the travel time limit. It means that there is no more possible points when Q is empty. Another point is add a tuple element to priority queue, (vertex id, its predecessor id, distance). This point aims to successfully find those points, in different edge, that lead to the same vertex.
+To find all sufficiently distant points without searching whole map, the main idea is to create two priority queues -- Q and Qb. Q stores the vertices whose predecessor that can be visited within the travel time limit. Qb stores the vertices whose predecessor that can't be visited within the travel time limit. It means that there is no more possible points when Q is empty. Another point is add a tuple element to priority queue, (vertex id, its predecessor id, distance). This point aims to successfully find those points, in different edge, that lead to the same vertex.
 We can observe that there are few points obtained in Figure \ref{fig:questioin_1.3_out}. We can deduce that lots of vertices and edges will never be visited when we travel a sufficiently distant destination. And we find that the points in Figure \ref{fig:questioin_1.3_out} are all in "highways" connecting different cities.
 \end{document}
