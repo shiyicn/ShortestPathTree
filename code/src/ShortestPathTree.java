@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class ShortestPathTree {
@@ -70,9 +74,6 @@ public class ShortestPathTree {
                 unsettledBuffer.add(p2);
             }
 
-            if (shortestDistances.get(p.k) == null) {
-                System.out.println(p.k);
-            }
             //we possibly continue to add redundant distances for settled vertices
             if (p.v <= shortestDistances.get(p.k) && p.v > travelTime) {
                 //add appropriate vertex to verticesDist set
@@ -99,6 +100,10 @@ public class ShortestPathTree {
                     distCurrent = p.v + g.getDistance(p.k, v, flagOfOut);
                     //update its distance to the source
                     //if vertex v isn't yet reached or current distance is no more than its former one
+                    if (settled.contains(v)) {
+                        continue;
+                    }
+
                     if (shortestDistances.get(v) == null || distCurrent < shortestDistances.get(v)) {
                         shortestDistances.put(v, distCurrent);
                         //if the distance is more than travel time, we add it to unsettledBuffer set
@@ -236,14 +241,29 @@ System.out.println("r(" + v + ") = " + (high + low) / 2);
      * @param g : graph
      */
     public static void randomVerticesReach(int n, Graph g) {
-        List<Long> keys = g.ids();
-        Random r = new Random();
-        for (int i=0; i<n; i+=1) {
-            long t0 = System.currentTimeMillis();
-            reach(keys.get(r.nextInt(keys.size())), g);
-            long t1 = System.currentTimeMillis();
-            System.out.println("Time cost: " + (t1 - t0) / 1000);
+        try {
+            String pointsFile = "reach_france.txt";
+            File points = new File(pointsFile);
+            BufferedWriter out = new BufferedWriter(new FileWriter(points));
+            out.write("reach info for 1000 sampled points in idf\n");
+            out.flush();
+            List<Long> keys = g.ids();
+            Random r = new Random();
+            for (int i=0; i<n; i+=1) {
+                long t0 = System.currentTimeMillis();
+                long id = keys.get(r.nextInt(keys.size()));
+                out.write(id + " " + reach(id, g) + "\n");
+                out.flush();
+                long t1 = System.currentTimeMillis();
+                System.out.println("Time cost: " + (t1 - t0) / 1000);
+            }
+            out.close();
+        }catch (IOException e) {
+            System.out.println(e);
         }
+
+        System.out.println("reach is saved in file \"reach_france.txt\"");
+
     }
 
     /**

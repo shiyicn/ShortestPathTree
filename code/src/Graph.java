@@ -1,8 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Graph class containing all edges and vertices
@@ -53,7 +50,7 @@ public class Graph {
                 line = br.readLine();
             }
             br.close();
-            System.out.println("Finish reading graph file and constructing a graph successfully! ");
+            System.out.println("Finish reading graph file and construct a graph successfully! ");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -194,6 +191,13 @@ public class Graph {
     public List<Long> ids() {
         List<Long> ids = new ArrayList<>(vertices.keySet());
         return ids;
+    }
+
+    public long getRandom() {
+        Random r = new Random();
+        List<Long> keys = ids();
+        long id = keys.get(r.nextInt(keys.size()));
+        return id;
     }
 
 }
