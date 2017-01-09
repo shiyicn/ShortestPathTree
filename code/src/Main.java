@@ -6,11 +6,14 @@ public class Main {
     public static void main(String[] args) {
         Graph g = new Graph();
 
-        String map;
+        String map = "idf.in";
+        Graph.addMap(g, map);
         /*
         String points =
                 "/Users/Huangzuli/Informatique/INF421/shortest_path/code/RoadNetworks/vis/points.js";
         */
+        ShortestPathTree.randomVerticesReach(100, g);
+        /*
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Please load a map");
@@ -37,6 +40,7 @@ public class Main {
                 System.out.println("Illegal command, try again");
             }
         }
+        */
 
         //question1(g, points, center, 2 * ShortestPathTree.HOUR);
         //question2(g, points, center, 2*ShortestPathTree.HOUR);

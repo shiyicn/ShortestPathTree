@@ -215,8 +215,10 @@ public class ShortestPathTree {
             if (breakFlag) low = high / 2;
             // if not 'high' is already a upper bound of reach
             else break;
+System.out.println(low + "   " + high);
         } while (true);
 
+        /*
         sptOut.clear();
         sptIn.clear();
         check.clear();
@@ -233,6 +235,30 @@ public class ShortestPathTree {
 
 System.out.println("r(" + v + ") = " + (high + low) / 2);
         return (high + low) / 2;
+        */
+        int h_s = 2*low;
+        int l_s = low;
+        while(h_s > l_s) {
+            sptOut.clear();
+            sptIn.clear();
+            check.clear();
+
+            int mid = (h_s + l_s) / 2;
+
+            inSet = sptIn.backwardPoints(v, 2 * mid, mid);
+            outSet = sptOut.backwardPoints(v, 2 * mid, mid);
+
+            boolean flag = check.checkDistance(inSet, outSet, high);
+            //if the distance is verified to be optimal, 1.5 * low is the lower bound
+            //of the the reach
+            if (flag) l_s = mid;
+                //if not '3 * low' is a upper bound of reach
+            else h_s = mid;
+            System.out.println(l_s + "   " + h_s);
+        }
+System.out.println("r(" + v + ") = " + (h_s + l_s));
+        return h_s + l_s;
+
     }
 
     /**
