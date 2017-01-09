@@ -1,4 +1,7 @@
 reach info for 1000 sampled points in idf
+vertex id and its reach
+
+
 461700699 4096
 1445618795 8192
 325736844 32768
