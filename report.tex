@@ -8,7 +8,7 @@
 \usepackage[titlepage]{polytechnique}
 
 
-\title[INF 411 Programming Project]{Shortest Path Trees and Reach in Road Networks}
+\title[INF 421 Programming Project]{Shortest Path Trees and Reach in Road Networks}
     %\subtitle{Le sous-titre (optionnel, enlever cette ligne sinon)}
     \author{Zuli \textsc{HUANG}\\
             Mingkun \textsc{LIU}
@@ -157,7 +157,7 @@ Let $T_{out}(x)$ be the set of points to which the travel time from $v$ is exact
 
 By (B.2), if there exists a point $s$ in $S_{in}(x)$ and a point $t$ in $T_{out}(x)$, such that some quickest path from $s$ to $t$ passes through $v$, then the reach of $v$ is at least $x$ hours, if not, by (B.3), the reach of $v$ is less than $2x$ hours.
 
-So for given $x$, we start with constructions of $S_{in}(x)$ and $T_{out}(x)$, and then find the shortest travel time from every point in $S_{in}(x)$ to every point in $T_{out}(x)$. If there exist $s\in S_{in}(x)$ and $t\in T_{out}(x)$ such that the travel time between $s$ and $t$ is $2x$, we have $r(v)\geq x$, and then we repeat the same steps but with $2x$ rather than $x$; if not, we have $r(v)\leq 2x$, and we repeat the same steps but with $x/2$ rather than $x$. Finally, we will reach a number $A$ that we have already calculated, and we return $2A$.
+So for given $x$, we start with constructions of $S_{in}(x)$ and $T_{out}(x)$, and then find the shortest travel time from every point in $S_{in}(x)$ to every point in $T_{out}(x)$. If there exist $s\in S_{in}(x)$ and $t\in T_{out}(x)$ such that the travel time between $s$ and $t$ is $2x$, we have $r(v)\geq x$, and then we repeat the same steps but with $2x$ rather than $x$; if not, we have $r(v)\leq 2x$, and we repeat the same steps but with $x/2$ rather than $x$. Finally, we will reach a number $A$ that we have already calculated, and we return $2A$. This algorithm can run quickly because $S_{in}(x)$ and $T_{out}(x)$ are always quite small sets of points as what we have observed in Part 1.
 
 
 \begin{algorithm}[H]
